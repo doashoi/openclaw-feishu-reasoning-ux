@@ -11,7 +11,7 @@
 
 Make OpenClaw show reasoning in Feishu in a Telegram-like real-time streaming way, avoid long black-box waits, and pair it with better-looking colorful 2.0 cards that support multi-component containers and rich text.
 
-This is a skill for OpenClaw, designed to improve or debug the Feishu reply experience, especially around:
+This is a skill for OpenClaw, designed to improve OpenClaw's reply experience in Feishu, especially around:
 
 - visible reasoning / reply dual lanes
 - collapsible reasoning panels
@@ -19,40 +19,27 @@ This is a skill for OpenClaw, designed to improve or debug the Feishu reply expe
 - unified titles, colors, and templates
 - model capability detection and troubleshooting
 
-## Preconditions and risk points
+## Before you use it
 
-Before asking an agent to modify anything, clarify these first:
+This approach is best suited to setups like:
 
-- confirm the current **OpenClaw version / actual running build**
-- confirm that the user is on **OpenClaw's built-in Feishu channel**
-- do not treat that as equivalent to **Feishu's official plugin** or other Feishu integrations
-- confirm the current model/provider path, especially:
-  - `minimax-cn`
-  - not `minimax-portal`
-- confirm which code path is actually loaded:
-  - `src/`
-  - or `dist/`
-- if raw reasoning is involved, do not jump straight into runtime changes
-  - first do low-risk title/color/card 2.0 container changes
-  - then confirm ordinary answer streaming is stable
-  - only then move into the higher-risk raw reasoning path
+- **OpenClaw's built-in Feishu channel**
+- a `minimax-cn` model path
+- users who want better Feishu reply UX or need to troubleshoot raw reasoning / streaming behavior
 
-The more important proven conditions behind this skill are:
+Important:
 
-- the actual OpenClaw version / build
-- OpenClaw's built-in Feishu channel
-- `minimax-cn/MiniMax-M2.7`
+- do not treat this as equivalent to **Feishu's official plugin**, other Feishu integrations, or browser-based relay flows
+- different OpenClaw versions, provider paths, and loaded runtime paths can produce different results
+- if the current model path does not expose readable live reasoning, this skill will not magically create it
 
-WSL was part of the validated case, but it is not the only hard prerequisite.
-The more common failure factors are:
+WSL was part of the validated case, but it is not the only prerequisite.
+What matters more is:
 
-- different OpenClaw versions/builds
-- different channel implementations
-- different provider paths
-- different loaded runtime paths
-- different service/session state
-
-If the user's setup differs on those factors, the agent should say so explicitly before proceeding.
+- the current OpenClaw version / build
+- the current Feishu channel implementation
+- the current provider/model path
+- the actual loaded runtime path
 
 ## Screenshots
 
@@ -74,10 +61,9 @@ A skill for improving OpenClaw's Feishu-channel reply experience.
 
 Its goal is to:
 
-- first confirm whether this is really the built-in OpenClaw Feishu channel rather than another Feishu plugin/integration
-- first detect whether the current model path truly supports visible raw reasoning
-- if yes, wire the real reasoning stream into Feishu cards
-- if not, explain the limitation clearly and still improve the reply-card UX
+- make Feishu replies more visible and more layered
+- show real raw reasoning when the current model path supports it
+- still improve card and streaming UX when raw reasoning is not available
 
 ## How this differs from ordinary Feishu streaming
 
@@ -101,7 +87,7 @@ The default preset works like this:
 4. collapse the reasoning panel when the final answer starts streaming
 5. continue streaming the final answer in the answer lane
 
-## This is not fake reasoning
+## Not every model can show raw reasoning
 
 This skill does not default to template text pretending to be reasoning.
 

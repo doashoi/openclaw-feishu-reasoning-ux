@@ -21,26 +21,10 @@ This is a skill for OpenClaw, designed to improve OpenClaw's reply experience in
 
 ## Before you use it
 
-This approach is best suited to setups like:
-
-- **OpenClaw's built-in Feishu channel**
-- users who want better Feishu reply UX or need to troubleshoot raw reasoning / streaming behavior
-
-Important:
-
-- do not treat this as equivalent to **Feishu's official plugin**, other Feishu integrations, or browser-based relay flows
 - different OpenClaw versions, provider paths, and loaded runtime paths can produce different results
 - if the current model path does not expose readable live reasoning, this skill will not magically create it
-- what matters most is not the model name by itself, but whether the current path actually emits usable live reasoning signals
-
-WSL was part of the validated case, but it is not the only prerequisite.
-What matters more is:
-
-- the current OpenClaw version / build
-- the current Feishu channel implementation
-- the current provider/model path
-- whether the current path actually emits readable live reasoning
-- the actual loaded runtime path
+- whether live reasoning is possible depends on what the current path actually emits, not just on the model name
+- the skill is designed to guide OpenClaw through backup, self-checks, and low-risk customization first; if the required conditions are not met, it should stop or stay on low-risk card-layer changes
 
 ## Screenshots
 
@@ -100,6 +84,12 @@ Then it decides:
 
 - whether raw reasoning can be shown
 - or whether only ordinary answer streaming and card UX improvements are possible
+
+That means:
+
+- the skill should first detect what kind of reasoning signal the current path exposes
+- only then decide whether true live raw reasoning is feasible
+- otherwise stop at diagnosis or continue only with safer card and streaming UX improvements
 
 ## Who this is for
 

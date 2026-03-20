@@ -195,6 +195,7 @@ All of them matter. Missing any one of them can produce a fake "same environment
 - Verify the local model table before claiming that "M2.7 does not work".
 
 If these seven checks are not complete, do not conclude that the skill failed.
+If these checks are incomplete, do not enter high-risk runtime/provider/session modification.
 
 ## First pass: identify the real layer
 
@@ -229,6 +230,30 @@ Before editing anything, classify the issue into one of these layers:
 
 Do not assume a visual symptom is a card-layer problem. A "Thinking..." only state is often a runtime or session-state problem.
 Also do not assume all "Feishu plugins" are the same execution path.
+
+## Stop conditions for risky changes
+
+Do not modify high-risk layers if any of these are still unclear:
+
+- installed OpenClaw version/build
+- whether the user is on the built-in OpenClaw Feishu channel
+- actual provider/model path
+- whether live reasoning signals truly exist
+- how to roll back the exact files you are about to edit
+
+If any of those are unknown, stop at one of these safe outcomes:
+
+1. diagnostic conclusion only
+2. low-risk card 2.0 appearance changes only
+3. ordinary answer streaming fixes only
+
+Do not continue into:
+- provider registration changes
+- session initialization changes
+- runtime callback wiring changes
+- `dist/` patching
+
+unless the above preconditions are verified.
 
 ## Files to inspect first
 
@@ -465,6 +490,9 @@ Do not let the agent do any of these:
 - promise raw reasoning on a model before checking whether readable live reasoning exists
 - silently restart the gateway
 - apply provider/session/runtime changes before low-risk card-layer changes are verified
+- change provider model tables just because a model name "should" work
+- patch session initialization before proving the current-session behavior is correct
+- patch runtime callback wiring before proving the current path really emits live reasoning
 
 ### Rule 5: Fix the system, not a single task
 

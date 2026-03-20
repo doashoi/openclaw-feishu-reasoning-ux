@@ -13,19 +13,21 @@ This reference captures a proven debugging and implementation approach for OpenC
 This guide is not abstract. It was derived from a real deployment that was debugged end-to-end and eventually restored successfully.
 
 Proven reference case:
-- OpenClaw running inside WSL
+- a specific OpenClaw build/runtime path
 - OpenClaw's built-in Feishu channel
 - `minimax-cn/MiniMax-M2.7`
 - not `minimax-portal/*`
 
 Use this as the first comparison target when another user says "my setup is basically the same".
 
-The most common false equivalences are:
-- `minimax-cn` vs `minimax-portal`
+The highest-priority comparison factors are:
+- actual OpenClaw version/build
 - built-in OpenClaw Feishu channel vs other Feishu integrations
+- `minimax-cn` vs `minimax-portal`
+- loaded runtime path (`src/` vs `dist/`)
 - shell test path vs gateway service path
 
-If another user's setup differs on any of these, treat it as a different case until proven otherwise.
+Do not overfocus on WSL vs non-WSL unless logs show environment differences are actually relevant.
 
 ## 1. The most important lesson
 
@@ -184,6 +186,8 @@ Do not assume one successful provider path generalizes to another.
 
 When checking a model for Feishu raw reasoning support, use this decision tree:
 
+0. Verify the installed OpenClaw version/build first.
+   - if behavior differs from expectations, compare the live installed build before assuming the same fix path applies
 1. Verify the current Feishu path is really the intended implementation.
    - confirm whether the user is on OpenClaw's built-in Feishu channel
    - do not assume Feishu official plugin behavior is equivalent

@@ -23,23 +23,36 @@ This is a skill for OpenClaw, designed to improve or debug the Feishu reply expe
 
 Before asking an agent to modify anything, clarify these first:
 
+- confirm the current **OpenClaw version / actual running build**
 - confirm that the user is on **OpenClaw's built-in Feishu channel**
 - do not treat that as equivalent to **Feishu's official plugin** or other Feishu integrations
 - confirm the current model/provider path, especially:
   - `minimax-cn`
   - not `minimax-portal`
+- confirm which code path is actually loaded:
+  - `src/`
+  - or `dist/`
 - if raw reasoning is involved, do not jump straight into runtime changes
   - first do low-risk title/color/card 2.0 container changes
   - then confirm ordinary answer streaming is stable
   - only then move into the higher-risk raw reasoning path
 
-The proven reference case behind this skill is:
+The more important proven conditions behind this skill are:
 
-- OpenClaw running inside WSL
+- the actual OpenClaw version / build
 - OpenClaw's built-in Feishu channel
 - `minimax-cn/MiniMax-M2.7`
 
-If the user's setup differs from that path, the agent should say so explicitly before proceeding.
+WSL was part of the validated case, but it is not the only hard prerequisite.
+The more common failure factors are:
+
+- different OpenClaw versions/builds
+- different channel implementations
+- different provider paths
+- different loaded runtime paths
+- different service/session state
+
+If the user's setup differs on those factors, the agent should say so explicitly before proceeding.
 
 ## Screenshots
 

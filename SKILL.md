@@ -20,20 +20,24 @@ This skill is not for generic Feishu app setup, permissions, or bot connectivity
 
 ## Real-world reference case
 
-This skill was validated on a specific real deployment shape. Treat it as the primary reference case unless the user clearly says their setup is different.
+This skill was validated on a specific real deployment shape, but do not treat every detail of that environment as a hard prerequisite.
 
-Reference case:
-- OpenClaw runs inside WSL
-- uses the built-in OpenClaw Feishu channel
-- target model path is `minimax-cn/MiniMax-M2.7`
+Proven reference case:
+- a specific OpenClaw build/runtime path
+- OpenClaw's built-in Feishu channel
+- `minimax-cn/MiniMax-M2.7`
 - not `minimax-portal/*`
 
-Why this matters:
-- many failures that look "the same" are actually different because the runtime path is different
-- `minimax-cn` and `minimax-portal` are not interchangeable
-- a browser plugin or external relay flow is also not the same thing as the built-in Feishu channel
+Use this case as a comparison point, not as a rigid gate.
 
-If the user's setup differs from this reference case, say that explicitly before continuing.
+The details that matter most are usually:
+- actual OpenClaw version/build
+- whether the channel is the built-in OpenClaw Feishu channel
+- provider/model path
+- loaded runtime path (`src/` vs `dist/`)
+- session/service state
+
+Do not overfocus on WSL vs non-WSL unless logs show environment differences are actually relevant.
 
 ## Interaction style for end users
 
@@ -147,6 +151,10 @@ If you cannot explain rollback clearly, the change is not ready.
 Before promising that "the same official Feishu channel + the same minimax-cn path should work", verify these exact conditions one by one.
 
 All of them matter. Missing any one of them can produce a fake "same environment" that still fails.
+
+0. The running OpenClaw version/build is known.
+- Verify the actual installed OpenClaw version before assuming the same fix path applies.
+- If behavior differs from documented expectations, compare the live installed build first.
 
 1. The current session is truly running on the intended provider/model.
 - Verify the active session transcript, not just the global default.

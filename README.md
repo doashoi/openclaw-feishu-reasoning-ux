@@ -23,21 +23,33 @@
 
 在让 Agent 开始改造前，先明确这几件事：
 
+- 先确认当前 **OpenClaw 版本 / 实际运行 build**
 - 先确认你用的是 **OpenClaw 内置的 Feishu 通道**
 - 不要把它和 **飞书官方插件**、别的 Feishu 集成、浏览器插件方案混为一谈
 - 再确认当前模型/provider 路线，尤其是：
   - `minimax-cn`
   - 不是 `minimax-portal`
+- 再确认实际加载的是哪套代码路径
+  - `src/`
+  - 还是 `dist/`
 - 如果要动 raw reasoning，不要一上来就改 runtime
   - 先做低风险的标题、颜色、卡片 2.0 容器
   - 再确认普通 answer streaming 稳定
   - 最后才进入 raw reasoning 这条高风险路径
 
-这个 skill 的经验主线，验证环境是：
+这个 skill 的经验主线，验证条件更重要的是：
 
-- WSL 里的 OpenClaw
+- 实际 OpenClaw 版本 / build
 - OpenClaw 内置 Feishu 通道
 - `minimax-cn/MiniMax-M2.7`
+
+WSL 是我们验证案例的一部分，但不是唯一硬前置条件。真正更容易导致失败的是：
+
+- 版本不同
+- 通道实现不同
+- provider 路线不同
+- 实际加载代码路径不同
+- service/session 状态不同
 
 如果你的环境不是这条线，Agent 应该先把差异说清楚，再决定怎么改。
 

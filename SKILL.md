@@ -105,6 +105,43 @@ Prefer language like:
 
 Do not jump straight into runtime surgery unless the user clearly wants visible raw reasoning.
 
+## Backup and rollback are mandatory
+
+Before any non-trivial Feishu customization, create a recovery trail first.
+
+This is not optional.
+
+Always do all three before risky changes:
+
+1. **Create a written change note**
+- summarize what is about to be changed
+- record the current model/provider/session assumptions
+- record the target files
+
+2. **Create a file backup**
+- back up every file that will be modified
+- use a clearly named backup directory with date/time context
+- do this before the first edit, not after
+
+3. **Prepare a user-facing rollback guide**
+- tell the user exactly how to restore the prior state
+- include file paths
+- include whether a gateway restart is needed after restore
+
+If the user environment is fragile, prefer incremental backup points instead of one large backup.
+
+### Minimum rollback instructions to provide
+
+Before claiming a risky change is ready to test, the agent must be able to tell the user:
+
+- which files were changed
+- where the backups were saved
+- how to restore the backups
+- whether restoring requires a gateway restart
+- how to verify that rollback succeeded
+
+If you cannot explain rollback clearly, the change is not ready.
+
 ## Non-negotiable baseline checklist
 
 Before promising that "the same official Feishu channel + the same minimax-cn path should work", verify these exact conditions one by one.

@@ -115,6 +115,34 @@ Use this rollout order:
 This order minimizes blast radius.
 Even if work stops early, the user still keeps a better Feishu card experience instead of a broken channel.
 
+## 2.2 Backup-before-edit protocol
+
+For real user environments, especially when touching runtime/session/provider layers, use this protocol:
+
+1. Write down the planned scope
+- what behavior is broken
+- what is going to be changed
+- which files are in scope
+
+2. Create backups first
+- copy every target file before editing
+- keep backups in a clearly named folder
+- include enough naming context that the user can identify the rollback point later
+
+3. Explain rollback before testing
+- the user should know how to go back before the first risky test
+
+Recommended rollback explanation format:
+
+- `Backups are here: ...`
+- `Changed files are: ...`
+- `To roll back, restore these files from backup.`
+- `After restore, restart gateway if needed.`
+- `Then verify with one minimal Feishu test message.`
+
+This matters because the most expensive failure mode is not "the card still looks wrong".
+It is "the user no longer trusts the environment and does not know how to recover it".
+
 ## 3. Card 2.0 structure that works well
 
 Recommended high-level structure:

@@ -91,6 +91,20 @@ Possible causes:
 Fix strategy:
 - patch session initialization defaults for the intended Feishu scope
 
+## 2.3 Unknown-case handling
+
+This guide cannot cover every future OpenClaw build, provider path, or Feishu integration shape.
+
+When a new case does not match the documented patterns:
+
+- do not pretend it is already explained by an existing pattern
+- separate confirmed facts from working assumptions
+- tell the user explicitly that this is outside the proven cases
+- explain the risk of the next edit before making it
+- keep the first intervention low-risk whenever possible
+
+If the next step would require editing runtime/session/provider layers without a known-good pattern, prepare backup and rollback first and warn the user clearly.
+
 ## 2.1 Recommended modification order
 
 For other users' environments, do not start with the hardest layer first.

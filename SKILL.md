@@ -294,6 +294,25 @@ unless the above preconditions are verified.
 Do not stop only because the installed OpenClaw version/build differs from the reference case.
 Stop only when the build's actual runtime contracts are unknown or incompatible.
 
+## What to do when the situation is not covered by this skill yet
+
+If the current failure mode, runtime behavior, or channel behavior is not covered by the documented patterns in this skill, do not improvise silently.
+
+In that case:
+
+1. Explain clearly to the user that this is outside the known proven cases.
+2. State what is known, what is unknown, and which assumption would have to be made.
+3. Explain the risk level of the next possible change.
+4. Explain the rollback path before making any risky edit.
+5. Prefer stopping at diagnosis or low-risk card-layer changes unless the user explicitly wants to continue.
+
+Required style in those cases:
+- do not say "this should be safe" unless it is proven
+- do not present a guess as a confirmed root cause
+- do not continue directly into runtime/provider/session patching without warning the user
+
+If the user still wants to continue, proceed incrementally and verify after each step.
+
 ## Files to inspect first
 
 Locate the installed OpenClaw package root first. In many environments it will be something like:

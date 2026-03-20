@@ -159,6 +159,20 @@ Its strength is:
 - the Feishu UX customization method
 - the accumulated implementation experience
 
+## Screenshots
+
+### 1. Initial thinking state
+
+![Initial thinking state](./assets/01-thinking-start.jpg)
+
+### 2. Expanded reasoning content
+
+![Expanded reasoning content](./assets/02-reasoning-expanded.jpg)
+
+### 3. Collapsed reasoning with final reply
+
+![Collapsed reasoning with final reply](./assets/03-reasoning-collapsed-reply.jpg)
+
 ## FAQ
 
 ### 1. Why is raw reasoning sometimes in Chinese and sometimes in English?

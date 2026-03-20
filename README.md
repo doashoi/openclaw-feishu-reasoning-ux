@@ -162,6 +162,20 @@ Agent 应该按这个顺序做事：
 - Feishu UX 定制方法成熟
 - 有真实踩坑后的经验沉淀
 
+## 效果展示
+
+### 1. 刚进入思考阶段
+
+![刚进入思考阶段](./assets/01-thinking-start.jpg)
+
+### 2. 展开后的 reasoning 内容
+
+![展开后的 reasoning 内容](./assets/02-reasoning-expanded.jpg)
+
+### 3. 折叠 reasoning 后的最终回复
+
+![折叠 reasoning 后的最终回复](./assets/03-reasoning-collapsed-reply.jpg)
+
 ## 常见 FAQ
 
 ### 1. 为什么 raw reasoning 有时候是中文，有时候是英文？

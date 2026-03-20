@@ -64,6 +64,47 @@ A correct Feishu customization usually has to satisfy all of these:
 
 Do not optimize appearance first if delivery or runtime lane selection is broken.
 
+## Safe rollout strategy
+
+Default to phased customization, not all-at-once modification.
+
+The safest order is:
+
+1. **Low-risk card appearance changes**
+- titles
+- colors
+- card 2.0 layout
+- collapsible containers
+- rich text / container structure
+
+2. **Normal answer streaming behavior**
+- confirm ordinary streaming still works
+- keep reasoning disabled for now if needed
+
+3. **Raw reasoning capability check**
+- verify whether the current model/provider/runtime truly supports readable live reasoning
+
+4. **Raw reasoning runtime/session wiring**
+- only after capability is proven
+- only after ordinary card sending and answer streaming are stable
+
+5. **Persistence fixes**
+- only after the behavior is correct
+- patch new-session defaults or shared runtime logic so it survives restart and `/new`
+
+If the user only wants a better Feishu card experience, stop after phase 1 or phase 2.
+Do not pull them into high-risk reasoning/runtime changes unnecessarily.
+
+### How to explain phased rollout to the user
+
+Prefer language like:
+
+- `我们先做风险最小的部分：标题、颜色和卡片 2.0 容器。`
+- `普通回复流式先确认稳定，再决定要不要动 raw reasoning。`
+- `raw reasoning 这层要先看模型支不支持，支持再继续。`
+
+Do not jump straight into runtime surgery unless the user clearly wants visible raw reasoning.
+
 ## Non-negotiable baseline checklist
 
 Before promising that "the same official Feishu channel + the same minimax-cn path should work", verify these exact conditions one by one.
@@ -349,6 +390,7 @@ Do not let the agent do any of these:
 - modify only `src/` files when runtime behavior suggests the loaded code is from `dist/`
 - promise raw reasoning on a model before checking whether readable live reasoning exists
 - silently restart the gateway
+- apply provider/session/runtime changes before low-risk card-layer changes are verified
 
 ### Rule 5: Fix the system, not a single task
 

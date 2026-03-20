@@ -87,6 +87,34 @@ Possible causes:
 Fix strategy:
 - patch session initialization defaults for the intended Feishu scope
 
+## 2.1 Recommended modification order
+
+For other users' environments, do not start with the hardest layer first.
+
+Use this rollout order:
+
+1. **Card appearance only**
+- title wording
+- color strategy
+- container layout
+- collapsible panels
+- rich text structure
+
+2. **Ordinary answer streaming**
+- make sure final answer streaming is reliable before touching reasoning
+
+3. **Reasoning capability detection**
+- prove whether the current model path can expose readable live reasoning
+
+4. **Reasoning integration**
+- only if phase 3 passes
+
+5. **Persistence / session initialization**
+- only after the behavior is correct in one live session
+
+This order minimizes blast radius.
+Even if work stops early, the user still keeps a better Feishu card experience instead of a broken channel.
+
 ## 3. Card 2.0 structure that works well
 
 Recommended high-level structure:

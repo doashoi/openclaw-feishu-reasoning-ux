@@ -37,6 +37,41 @@ It helps an agent:
 - customize Feishu reply cards based on user preference
 - preserve behavior across restarts and new sessions as much as possible
 
+This skill is not meant to impose only one fixed visual preset.
+
+It is designed so that:
+
+- container structure can be highly customized
+- title wording can be highly customized
+- reasoning panel wording can be highly customized
+- color strategy can be highly customized
+
+So after loading the skill, the ideal agent behavior is not just "apply one template", but to continue asking the user things like:
+
+- what should the main title say?
+- what should the reasoning panel say?
+- should colors be random or fixed?
+- should the reasoning panel auto-collapse?
+- should the final reply card feel minimal or layered?
+
+## How the default preset works
+
+The default preset roughly works like this:
+
+1. send a Feishu card first
+2. show a placeholder inside the reasoning panel
+3. stream raw reasoning into the collapsible panel in real time
+4. when the final answer starts streaming, collapse the reasoning panel
+5. continue streaming the final answer in a separate answer area
+6. close on a single structured final card
+
+So this is not just a single-lane "Thinking... then answer" experience.
+
+It is a two-lane experience:
+
+- reasoning lane
+- answer lane
+
 ## What this is not
 
 This skill does **not** guarantee raw reasoning on every model.
@@ -50,6 +85,46 @@ In those cases, the skill should guide the agent to:
 - explain the limitation clearly
 - offer practical alternatives
 - still improve Feishu card 2.0 UX where possible
+
+## How this differs from ordinary Feishu streaming
+
+This skill is not just about turning on OpenClaw's Feishu `streaming=true`.
+
+Ordinary Feishu streaming usually only provides:
+
+- streaming final answer text
+
+What it usually does **not** provide:
+
+- visible raw reasoning
+- separate reasoning and answer lanes
+- a collapsible reasoning panel
+- auto-collapse of reasoning followed by continued answer streaming
+
+So this experience is fundamentally different from merely enabling normal Feishu streaming.
+
+More precisely:
+
+- **ordinary Feishu streaming**: only streams the final answer text
+- **this skill's target UX**: like Telegram reasoning stream, it makes the thinking process itself visible in real time, then closes into the final answer
+
+## This is not fake simulated thinking
+
+An important distinction:
+
+this skill is not trying to fake reasoning by printing a handcrafted "thinking..." block.
+
+The real flow is:
+
+1. detect whether the current model/provider/runtime truly exposes live reasoning
+2. if yes, wire the real reasoning stream into the Feishu card
+3. if not, tell the user clearly that the current model path does not support it instead of faking a reasoning section
+
+That is the main difference from many UIs that merely look like they are showing thought:
+
+- capability detection first
+- only real reasoning is shown
+- template text is not used to impersonate model reasoning
 
 ## Who this is for
 
@@ -172,6 +247,32 @@ Its strength is:
 ### 3. Collapsed reasoning with final reply
 
 ![Collapsed reasoning with final reply](./assets/03-reasoning-collapsed-reply.jpg)
+
+## How this experience is implemented
+
+At a high level:
+
+1. determine whether the current model truly supports readable live reasoning
+2. if it does, wire the reasoning live event into Feishu
+3. split the Feishu card into two content lanes:
+   - reasoning lane
+   - answer lane
+4. use `collapsible_panel` for reasoning
+5. use a separate answer area for the final reply
+6. collapse reasoning at the correct time instead of hiding it immediately
+
+So the core challenge is not just "make the card prettier". It is aligning:
+
+- provider
+- runtime
+- session
+- dispatcher
+- card layout
+
+Detailed implementation and troubleshooting are documented in:
+
+- [SKILL.md](./SKILL.md)
+- [references/implementation-guide.md](./references/implementation-guide.md)
 
 ## FAQ
 

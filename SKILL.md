@@ -18,6 +18,27 @@ This skill is for:
 
 This skill is not for generic Feishu app setup, permissions, or bot connectivity unless those directly block card delivery.
 
+## Core operating principles
+
+This is not a "silently fix everything" skill.
+
+Treat it as:
+- a diagnosis-first skill
+- a user-consent-first customization skill
+- a backup-and-rollback-first skill
+
+The user keeps control of the risky steps.
+
+That means:
+- if the current environment differs from the proven cases, do not silently push ahead
+- explain the difference, the likely risk, the expected benefit, and the rollback path first
+- let the user decide whether to continue
+
+When in doubt:
+- prefer stopping with a clear explanation
+- prefer low-risk card-layer improvements
+- avoid self-authorized runtime/session/provider surgery
+
 ## Real-world reference case
 
 This skill was validated on a specific real deployment shape, but do not treat every detail of that environment as a hard prerequisite.

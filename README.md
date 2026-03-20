@@ -9,9 +9,9 @@
 ![OpenClaw](https://img.shields.io/badge/OpenClaw-Feishu%20UX-0ea5e9)
 ![Skill](https://img.shields.io/badge/type-skill-8b5cf6)
 
-让 OpenClaw 在飞书里的回复更可见、可流、可定制。
+让 OpenClaw 在飞书里的像 Telegram 通道中一样实时流式更新思考内容，避免长时间黑盒等待。
 
-这是一个给 Agent 使用的 skill，用来改造或排查 OpenClaw 的 Feishu 回复体验，重点包括：
+这是一个给 Openclaw 使用的 skill，用来改造或排查 OpenClaw 的 Feishu 回复体验，重点包括：
 
 - 可见的 reasoning / reply 双 lane
 - 折叠式 reasoning 面板
@@ -35,7 +35,7 @@
 
 ## 这是什么
 
-这不是普通的“发飞书卡片” skill。
+改善 Openclaw 在飞书通道中的回复体验的 skill。
 
 它的目标是：
 
@@ -45,7 +45,7 @@
 
 ## 和普通 Feishu 流式的区别
 
-普通 Feishu streaming 通常只能流正式回答。
+Openclaw 自带的飞书通道以及飞书官方插件仅能实现正式回复内容的流式显示，无法实时流式更新模型的思考内容。
 
 这个 skill 想做的是：
 
@@ -53,7 +53,7 @@
 - reasoning 放进折叠面板
 - answer 在单独区域继续流
 
-也就是更接近 Telegram reasoning stream 的体验，而不是只有一段正文在更新。
+也就是更接近 Telegram reasoning stream 的体验，而不是只有一段正文在实时更新。
 
 ## 默认预设流程
 
@@ -93,7 +93,7 @@
 
 推荐方式：
 
-- 直接把这个 GitHub 仓库地址交给 OpenClaw / Agent
+- 直接把这个 GitHub 仓库地址交给 OpenClaw
 - 让它从仓库读取 skill 并执行
 
 仓库地址：
@@ -164,13 +164,3 @@
 
 - [SKILL.md](./SKILL.md)
 - [references/implementation-guide.md](./references/implementation-guide.md)
-
-## 重启策略
-
-如果改动需要重启 `openclaw-gateway`：
-
-- Agent 必须先说明原因
-- 要么让用户自己执行
-- 要么先征求用户确认
-
-不能静默重启。

@@ -19,6 +19,28 @@
 - 标题、颜色、模板统一
 - 模型能力检测与问题排查
 
+## 前置条件与风险点
+
+在让 Agent 开始改造前，先明确这几件事：
+
+- 先确认你用的是 **OpenClaw 内置的 Feishu 通道**
+- 不要把它和 **飞书官方插件**、别的 Feishu 集成、浏览器插件方案混为一谈
+- 再确认当前模型/provider 路线，尤其是：
+  - `minimax-cn`
+  - 不是 `minimax-portal`
+- 如果要动 raw reasoning，不要一上来就改 runtime
+  - 先做低风险的标题、颜色、卡片 2.0 容器
+  - 再确认普通 answer streaming 稳定
+  - 最后才进入 raw reasoning 这条高风险路径
+
+这个 skill 的经验主线，验证环境是：
+
+- WSL 里的 OpenClaw
+- OpenClaw 内置 Feishu 通道
+- `minimax-cn/MiniMax-M2.7`
+
+如果你的环境不是这条线，Agent 应该先把差异说清楚，再决定怎么改。
+
 ## 效果展示
 
 ### 刚进入思考阶段
@@ -39,6 +61,7 @@
 
 它的目标是：
 
+- 先确认是不是 OpenClaw 内置 Feishu 通道，而不是别的 Feishu 插件/接法
 - 先判断当前模型路径是否真的支持可见 raw reasoning
 - 如果支持，就把 reasoning 真实接进 Feishu 卡片
 - 如果不支持，就明确说明限制，并继续优化回复卡片体验

@@ -152,6 +152,13 @@ All of them matter. Missing any one of them can produce a fake "same environment
 - Verify the active session transcript, not just the global default.
 - Do not trust the agent saying it already switched.
 
+1.5. The current Feishu path is truly the intended channel implementation.
+- Verify whether the user is on:
+  - OpenClaw's built-in Feishu channel
+  - or Feishu's own official plugin / another integration path
+- Do not treat those as interchangeable.
+- If the user is not on the built-in OpenClaw Feishu channel, say that explicitly before continuing.
+
 2. The gateway service environment matches the shell path that was proven to work.
 - Proxy-related env differences can make shell tests succeed while live Feishu traffic fails.
 - If raw reasoning only works in local CLI tests, compare gateway service env before touching cards.
@@ -213,6 +220,7 @@ Before editing anything, classify the issue into one of these layers:
 - media/image sending path differs from text sending path
 
 Do not assume a visual symptom is a card-layer problem. A "Thinking..." only state is often a runtime or session-state problem.
+Also do not assume all "Feishu plugins" are the same execution path.
 
 ## Files to inspect first
 

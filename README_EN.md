@@ -19,6 +19,28 @@ This is a skill for OpenClaw, designed to improve or debug the Feishu reply expe
 - unified titles, colors, and templates
 - model capability detection and troubleshooting
 
+## Preconditions and risk points
+
+Before asking an agent to modify anything, clarify these first:
+
+- confirm that the user is on **OpenClaw's built-in Feishu channel**
+- do not treat that as equivalent to **Feishu's official plugin** or other Feishu integrations
+- confirm the current model/provider path, especially:
+  - `minimax-cn`
+  - not `minimax-portal`
+- if raw reasoning is involved, do not jump straight into runtime changes
+  - first do low-risk title/color/card 2.0 container changes
+  - then confirm ordinary answer streaming is stable
+  - only then move into the higher-risk raw reasoning path
+
+The proven reference case behind this skill is:
+
+- OpenClaw running inside WSL
+- OpenClaw's built-in Feishu channel
+- `minimax-cn/MiniMax-M2.7`
+
+If the user's setup differs from that path, the agent should say so explicitly before proceeding.
+
 ## Screenshots
 
 ### Initial thinking state
@@ -39,6 +61,7 @@ A skill for improving OpenClaw's Feishu-channel reply experience.
 
 Its goal is to:
 
+- first confirm whether this is really the built-in OpenClaw Feishu channel rather than another Feishu plugin/integration
 - first detect whether the current model path truly supports visible raw reasoning
 - if yes, wire the real reasoning stream into Feishu cards
 - if not, explain the limitation clearly and still improve the reply-card UX

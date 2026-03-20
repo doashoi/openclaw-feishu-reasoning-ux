@@ -184,12 +184,15 @@ Do not assume one successful provider path generalizes to another.
 
 When checking a model for Feishu raw reasoning support, use this decision tree:
 
-1. Verify the current session truly ran on the intended provider/model.
-2. Check `raw-stream.jsonl`.
+1. Verify the current Feishu path is really the intended implementation.
+   - confirm whether the user is on OpenClaw's built-in Feishu channel
+   - do not assume Feishu official plugin behavior is equivalent
+2. Verify the current session truly ran on the intended provider/model.
+3. Check `raw-stream.jsonl`.
    - If it shows live thinking text events, the model/runtime can support true raw reasoning.
-3. Check the saved session transcript.
+4. Check the saved session transcript.
    - If transcript has readable `thinking` but no live events, the model supports post-hoc thinking but not true live raw reasoning through the current runtime path.
-4. If transcript has only encrypted/opaque reasoning payloads, treat it as non-displayable raw reasoning.
+5. If transcript has only encrypted/opaque reasoning payloads, treat it as non-displayable raw reasoning.
 
 This prevents a common mistake:
 - blaming Feishu card code for a model/provider capability limit.

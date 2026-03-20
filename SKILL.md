@@ -47,6 +47,45 @@ A correct Feishu customization usually has to satisfy all of these:
 
 Do not optimize appearance first if delivery or runtime lane selection is broken.
 
+## Non-negotiable baseline checklist
+
+Before promising that "the same official Feishu channel + the same minimax-cn path should work", verify these exact conditions one by one.
+
+All of them matter. Missing any one of them can produce a fake "same environment" that still fails.
+
+1. The current session is truly running on the intended provider/model.
+- Verify the active session transcript, not just the global default.
+- Do not trust the agent saying it already switched.
+
+2. The gateway service environment matches the shell path that was proven to work.
+- Proxy-related env differences can make shell tests succeed while live Feishu traffic fails.
+- If raw reasoning only works in local CLI tests, compare gateway service env before touching cards.
+
+3. The current runtime path is actually producing live reasoning events.
+- Check `~/.openclaw/logs/raw-stream.jsonl`.
+- For MiniMax CN, look for `assistant_thinking_stream`.
+- If this log is empty for the current request, card changes cannot fix raw reasoning.
+
+4. The dispatcher is in true reasoning stream mode.
+- OpenClaw only emits live reasoning callbacks when the runtime is in `reasoningMode = "stream"`.
+- `thinkingLevel = low` alone is not enough.
+
+5. `onReasoningStream` / `onReasoningEnd` are attached to the final `replyOptions`.
+- Attaching them only to intermediate dispatcher options is not sufficient.
+- If provider logs show live thinking but Feishu still only shows `Thinking...`, check this first.
+
+6. New Feishu direct sessions inherit reasoning defaults.
+- A manual session patch is not enough.
+- If `/new` or next-day sessions lose raw reasoning, fix session initialization so new Feishu direct sessions default to:
+  - `reasoningLevel = "stream"`
+  - `thinkingLevel = "low"`
+
+7. The model is actually registered in the local model table.
+- `minimax-cn/MiniMax-M2.7` is a known trap: the provider may support it while the local model registry still silently falls back to `M2.5`.
+- Verify the local model table before claiming that "M2.7 does not work".
+
+If these seven checks are not complete, do not conclude that the skill failed.
+
 ## First pass: identify the real layer
 
 Before editing anything, classify the issue into one of these layers:
@@ -192,6 +231,12 @@ For Feishu direct sessions that should show raw reasoning, check:
 
 If new sessions keep dropping reasoning visibility, fix session initialization, not just the current session entry.
 
+Also verify that the failure is not just a stale or wrong model override:
+- `providerOverride`
+- `modelOverride`
+- `authProfileOverride`
+- actual provider/model recorded in the latest assistant turn
+
 ### 4. Confirm dispatcher wiring
 
 For raw reasoning to display, the Feishu dispatcher must receive reasoning callbacks through the final reply options that runtime actually uses.
@@ -199,6 +244,9 @@ For raw reasoning to display, the Feishu dispatcher must receive reasoning callb
 Do not attach `onReasoningStream` to the wrong layer.
 
 If provider logs show thinking stream but Feishu only shows a static placeholder, inspect how `onReasoningStream` and `onReasoningEnd` are passed into the runtime.
+
+Also verify that the runtime path is really in reasoning stream mode.
+If the runtime is only in plain "thinking enabled" mode, Feishu may still get final transcript thinking without ever receiving live reasoning callbacks.
 
 ### 5. Confirm card lane behavior
 
@@ -258,6 +306,32 @@ All message paths should share the same title/header strategy:
 - image/media fallback card paths
 
 If titles regress in only one path, inspect `outbound.ts` and fallback card builders.
+
+## Known-good path vs. lookalikes
+
+Do not treat these as equivalent without evidence:
+
+- `official Feishu channel`
+- `same minimax-cn provider`
+- `same model name on screen`
+
+These can still differ in the real failure points:
+- session override drift
+- model table fallback
+- gateway service env drift
+- runtime callback wiring drift
+
+Always prove the real path with logs and transcripts.
+
+## Anti-patterns
+
+Do not let the agent do any of these:
+
+- assume "same provider + same channel" means same runtime path
+- patch only the current session and claim the issue is solved
+- modify only `src/` files when runtime behavior suggests the loaded code is from `dist/`
+- promise raw reasoning on a model before checking whether readable live reasoning exists
+- silently restart the gateway
 
 ### Rule 5: Fix the system, not a single task
 

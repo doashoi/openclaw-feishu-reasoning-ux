@@ -164,3 +164,60 @@ Most work lands in:
 - `extensions/feishu/src/config-schema.ts`
 
 If symptoms and source do not match, inspect the actual runtime-loaded code path, which may be compiled `dist/`.
+
+## 8. Release-grade verification checklist
+
+If this skill is being used on another user's machine, do not stop at "the setup looks similar".
+
+Before concluding whether the skill worked, verify this exact checklist:
+
+1. **Current session really runs on the intended provider/model**
+- confirm in the latest session transcript
+- do not trust only the global default or the agent's reply text
+
+2. **Gateway service env matches the path that was proven to work**
+- if local shell tests and live Feishu behavior differ, compare service env first
+- proxy-related env drift is a common hidden cause
+
+3. **Live reasoning events exist for the real Feishu request**
+- inspect `~/.openclaw/logs/raw-stream.jsonl`
+- if there is no live reasoning event there, card-layer changes cannot restore raw reasoning
+
+4. **Runtime is in real reasoning stream mode**
+- `reasoningMode = "stream"` is required for live reasoning callbacks
+- plain thinking-enabled mode is not enough
+
+5. **Reasoning callbacks are attached to final `replyOptions`**
+- if `assistant_thinking_stream` exists in logs but Feishu still shows only `Thinking...`, this is the first place to inspect
+
+6. **New Feishu direct sessions inherit reasoning defaults**
+- if only the current session works, the fix is incomplete
+- new sessions should preserve:
+  - `reasoningLevel = "stream"`
+  - `thinkingLevel = "low"`
+
+7. **The target model is really registered in the local model table**
+- especially for `minimax-cn/MiniMax-M2.7`
+- a provider can support the model while local model selection still falls back to another model
+
+## 9. Known traps
+
+### Trap A: "Same official Feishu channel + same minimax-cn" still failed
+
+This does not prove the skill is wrong.
+
+It often means one of these differed:
+- session override
+- model table registration
+- gateway service env
+- runtime callback wiring
+- loaded `dist/` vs edited `src/`
+
+### Trap B: `/new` or the next day breaks raw reasoning again
+
+This usually means the current session was patched, but session initialization was not.
+
+### Trap C: Model looks correct on screen, but behavior matches another model
+
+Check whether the local model registry silently falls back.
+This is especially relevant for `minimax-cn/MiniMax-M2.7`.

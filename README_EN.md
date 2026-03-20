@@ -24,7 +24,6 @@ This is a skill for OpenClaw, designed to improve OpenClaw's reply experience in
 This approach is best suited to setups like:
 
 - **OpenClaw's built-in Feishu channel**
-- a `minimax-cn` model path
 - users who want better Feishu reply UX or need to troubleshoot raw reasoning / streaming behavior
 
 Important:
@@ -32,6 +31,7 @@ Important:
 - do not treat this as equivalent to **Feishu's official plugin**, other Feishu integrations, or browser-based relay flows
 - different OpenClaw versions, provider paths, and loaded runtime paths can produce different results
 - if the current model path does not expose readable live reasoning, this skill will not magically create it
+- what matters most is not the model name by itself, but whether the current path actually emits usable live reasoning signals
 
 WSL was part of the validated case, but it is not the only prerequisite.
 What matters more is:
@@ -39,6 +39,7 @@ What matters more is:
 - the current OpenClaw version / build
 - the current Feishu channel implementation
 - the current provider/model path
+- whether the current path actually emits readable live reasoning
 - the actual loaded runtime path
 
 ## Screenshots
@@ -159,6 +160,8 @@ One important nuance:
 - some model paths are not "completely unsupported"
 - they may only support snapshot/transcript-only thinking
 - in those cases, the model can still preserve reasoning after completion, but it cannot provide true live raw reasoning
+- another case is when the model name looks the same as a successful reference case, but the current runtime path still does not emit live reasoning signals
+- so the real criterion is what the path outputs, not just what the model is called
 
 So the more accurate statement is often:
 - `does not support true live raw reasoning on the current path`

@@ -21,10 +21,26 @@ This is a skill for OpenClaw, designed to improve OpenClaw's reply experience in
 
 ## Before you use it
 
-- different OpenClaw versions, provider paths, and loaded runtime paths can produce different results
+What actually has to be true:
+
+- you are customizing the Feishu reply path that OpenClaw itself controls
+- the current model/provider/runtime path emits usable reasoning signals
+- the current build still exposes the runtime hooks that this customization depends on
+
+What may affect compatibility, but should not be treated as an automatic blocker:
+
+- exact OpenClaw version/build
+- provider route
+- loaded runtime path (`src/` vs `dist/`)
+- shell vs gateway service environment
+- session state
+
+In other words:
+
 - if the current model path does not expose readable live reasoning, this skill will not magically create it
-- whether live reasoning is possible depends on what the current path actually emits, not just on the model name
-- the skill is designed to guide OpenClaw through backup, self-checks, and low-risk customization first; if the required conditions are not met, it should stop or stay on low-risk card-layer changes
+- whether live reasoning is feasible depends on what the current path actually emits, not just on the model name
+- version differences matter only when they change the runtime contracts this customization relies on
+- if those contracts are still compatible, the skill should continue instead of stopping only because the version is different
 
 ## Screenshots
 
@@ -90,6 +106,12 @@ That means:
 - the skill should first detect what kind of reasoning signal the current path exposes
 - only then decide whether true live raw reasoning is feasible
 - otherwise stop at diagnosis or continue only with safer card and streaming UX improvements
+
+This also means:
+
+- do not treat a model name as the reason something works
+- do not treat a version difference as the reason something must fail
+- the real criteria are the emitted reasoning signals and the runtime hooks available in the installed build
 
 ## Who this is for
 

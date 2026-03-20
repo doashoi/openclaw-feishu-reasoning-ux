@@ -31,11 +31,16 @@ Proven reference case:
 Use this case as a comparison point, not as a rigid gate.
 
 The details that matter most are usually:
-- actual OpenClaw version/build
 - whether the channel is the built-in OpenClaw Feishu channel
+- whether the current path emits usable live reasoning signals
+- whether the installed build still exposes the runtime hooks this customization depends on
 - provider/model path
 - loaded runtime path (`src/` vs `dist/`)
 - session/service state
+
+Treat OpenClaw version/build as a compatibility factor, not a rigid gate by itself.
+The question is not "is the version identical to the reference case?"
+The question is "does this installed build still expose compatible runtime contracts?"
 
 Do not overfocus on WSL vs non-WSL unless logs show environment differences are actually relevant.
 
@@ -146,35 +151,66 @@ Before claiming a risky change is ready to test, the agent must be able to tell 
 
 If you cannot explain rollback clearly, the change is not ready.
 
-## Non-negotiable baseline checklist
+## Necessary conditions vs compatibility factors
 
-Before promising that "the same official Feishu channel + the same minimax-cn path should work", verify these exact conditions one by one.
+Separate hard requirements from things that only increase risk.
+Do not treat every difference from the reference case as a blocker.
 
-All of them matter. Missing any one of them can produce a fake "same environment" that still fails.
+### Necessary conditions for raw reasoning customization
 
-0. The running OpenClaw version/build is known.
-- Verify the actual installed OpenClaw version before assuming the same fix path applies.
-- If behavior differs from documented expectations, compare the live installed build first.
+These are the conditions that actually have to be true before you try to modify the raw reasoning lane:
 
-1. The current session is truly running on the intended provider/model.
-- Verify the active session transcript, not just the global default.
-- Do not trust the agent saying it already switched.
-
-1.5. The current Feishu path is truly the intended channel implementation.
+1. The current Feishu path is truly the intended channel implementation.
 - Verify whether the user is on:
   - OpenClaw's built-in Feishu channel
   - or Feishu's own official plugin / another integration path
 - Do not treat those as interchangeable.
+
+2. The current session is truly running on the intended provider/model path.
+- Verify the active session transcript, not just the global default.
+- Do not trust the agent saying it already switched.
+
+3. The current runtime path is actually producing usable reasoning signals.
+- Check `~/.openclaw/logs/raw-stream.jsonl`.
+- For MiniMax CN, look for `assistant_thinking_stream`.
+- If the current request produces no usable reasoning signal, card changes cannot create true raw reasoning.
+
+4. The installed OpenClaw build still exposes compatible runtime hooks.
+- Examples:
+  - `reasoningMode = "stream"` is honored
+  - `onReasoningStream` / `onReasoningEnd` can reach the final `replyOptions`
+  - the dispatcher contract still matches the patch strategy
+- A different version is acceptable if these contracts are still compatible.
+
+5. A rollback path is ready before risky edits.
+- If you cannot explain backup and rollback clearly, do not patch runtime/session/provider layers.
+
+### Compatibility factors that can change the implementation
+
+These are important to inspect, but they are not automatic reasons to stop:
+
+- exact OpenClaw version/build
+- loaded runtime path (`src/` vs `dist/`)
+- gateway service environment vs shell environment
+- session initialization behavior
+- local model registry / alias table
+- WSL vs non-WSL
+
+They matter because they may change how you implement the fix.
+They do not automatically mean the fix is impossible.
+
+### What to verify first
+
+0. The running OpenClaw version/build is known.
+- Verify the actual installed OpenClaw version before assuming the same fix path applies.
+- Use this to compare contracts, not as a rigid stop condition by itself.
+
+1.5. The current Feishu path is truly the intended channel implementation.
 - If the user is not on the built-in OpenClaw Feishu channel, say that explicitly before continuing.
 
 2. The gateway service environment matches the shell path that was proven to work.
 - Proxy-related env differences can make shell tests succeed while live Feishu traffic fails.
 - If raw reasoning only works in local CLI tests, compare gateway service env before touching cards.
-
-3. The current runtime path is actually producing live reasoning events.
-- Check `~/.openclaw/logs/raw-stream.jsonl`.
-- For MiniMax CN, look for `assistant_thinking_stream`.
-- If this log is empty for the current request, card changes cannot fix raw reasoning.
 
 4. The dispatcher is in true reasoning stream mode.
 - OpenClaw only emits live reasoning callbacks when the runtime is in `reasoningMode = "stream"`.
@@ -194,8 +230,8 @@ All of them matter. Missing any one of them can produce a fake "same environment
 - `minimax-cn/MiniMax-M2.7` is a known trap: the provider may support it while the local model registry still silently falls back to `M2.5`.
 - Verify the local model table before claiming that "M2.7 does not work".
 
-If these seven checks are not complete, do not conclude that the skill failed.
-If these checks are incomplete, do not enter high-risk runtime/provider/session modification.
+If the necessary conditions are not met, do not attempt raw reasoning customization.
+If only compatibility factors differ, adapt the implementation instead of stopping by reflex.
 
 ## First pass: identify the real layer
 
@@ -235,10 +271,10 @@ Also do not assume all "Feishu plugins" are the same execution path.
 
 Do not modify high-risk layers if any of these are still unclear:
 
-- installed OpenClaw version/build
 - whether the user is on the built-in OpenClaw Feishu channel
 - actual provider/model path
 - whether live reasoning signals truly exist
+- whether the installed build still exposes compatible runtime hooks
 - how to roll back the exact files you are about to edit
 
 If any of those are unknown, stop at one of these safe outcomes:
@@ -254,6 +290,9 @@ Do not continue into:
 - `dist/` patching
 
 unless the above preconditions are verified.
+
+Do not stop only because the installed OpenClaw version/build differs from the reference case.
+Stop only when the build's actual runtime contracts are unknown or incompatible.
 
 ## Files to inspect first
 

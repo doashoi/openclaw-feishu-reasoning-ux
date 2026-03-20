@@ -21,13 +21,15 @@ Proven reference case:
 Use this as the first comparison target when another user says "my setup is basically the same".
 
 The highest-priority comparison factors are:
-- actual OpenClaw version/build
 - built-in OpenClaw Feishu channel vs other Feishu integrations
+- whether the current path emits usable reasoning signals
+- whether the installed build still exposes compatible runtime hooks
 - `minimax-cn` vs `minimax-portal`
 - loaded runtime path (`src/` vs `dist/`)
 - shell test path vs gateway service path
 
 Do not overfocus on WSL vs non-WSL unless logs show environment differences are actually relevant.
+Do not treat an OpenClaw version difference as a blocker by itself; treat it as a compatibility question.
 
 ## 1. The most important lesson
 
@@ -162,16 +164,32 @@ Header and template strategy:
 - use one shared title/template selection path
 - do not let fallback sends use a different legacy title
 
-## 4. Runtime conditions that matter
+## 4. Necessary conditions vs compatibility factors
 
-For raw reasoning to actually appear, these conditions must all be true:
+### Necessary conditions
 
-- the model/provider path emits readable live reasoning
+For raw reasoning to actually appear, these conditions must be true:
+
+- the current path emits readable or otherwise usable live reasoning signals
 - the current session is in reasoning stream mode
 - the Feishu dispatcher is wired to actual runtime reply options
+- the installed build still exposes compatible runtime hooks
 - the card has a visible reasoning lane
 
 If any one of these is false, the front-end card cannot compensate.
+
+### Compatibility factors
+
+These factors can change the repair method, but they are not automatic blockers:
+
+- exact OpenClaw version/build
+- loaded runtime path (`src/` vs `dist/`)
+- gateway service vs shell environment
+- session initialization behavior
+- local model registry
+- WSL vs non-WSL
+
+Use them to choose the right patch strategy, not to reject the attempt too early.
 
 ## 5. Model/provider caveat
 
@@ -188,6 +206,7 @@ When checking a model for Feishu raw reasoning support, use this decision tree:
 
 0. Verify the installed OpenClaw version/build first.
    - if behavior differs from expectations, compare the live installed build before assuming the same fix path applies
+   - use this to verify compatible runtime contracts, not as a hard stop by itself
 1. Verify the current Feishu path is really the intended implementation.
    - confirm whether the user is on OpenClaw's built-in Feishu channel
    - do not assume Feishu official plugin behavior is equivalent
@@ -200,6 +219,15 @@ When checking a model for Feishu raw reasoning support, use this decision tree:
 
 This prevents a common mistake:
 - blaming Feishu card code for a model/provider capability limit.
+
+It also prevents another common mistake:
+- rejecting a recoverable environment only because its OpenClaw version differs from the reference case
+
+The right question is:
+- does this installed build still expose the hooks required by the customization?
+
+Not simply:
+- is this exactly the same version as the proven case?
 
 Another common mistake:
 - calling a snapshot-only or transcript-only model path simply "unsupported"

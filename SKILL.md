@@ -18,6 +18,23 @@ This skill is for:
 
 This skill is not for generic Feishu app setup, permissions, or bot connectivity unless those directly block card delivery.
 
+## Real-world reference case
+
+This skill was validated on a specific real deployment shape. Treat it as the primary reference case unless the user clearly says their setup is different.
+
+Reference case:
+- OpenClaw runs inside WSL
+- uses the built-in OpenClaw Feishu channel
+- target model path is `minimax-cn/MiniMax-M2.7`
+- not `minimax-portal/*`
+
+Why this matters:
+- many failures that look "the same" are actually different because the runtime path is different
+- `minimax-cn` and `minimax-portal` are not interchangeable
+- a browser plugin or external relay flow is also not the same thing as the built-in Feishu channel
+
+If the user's setup differs from this reference case, say that explicitly before continuing.
+
 ## Interaction style for end users
 
 Assume many users do not know Feishu card internals, provider runtime details, or OpenClaw file layout.

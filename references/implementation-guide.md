@@ -8,6 +8,25 @@ This reference captures a proven debugging and implementation approach for OpenC
 - collapsible reasoning panels
 - unified titles/colors across all message paths
 
+## 0. Real deployment this guide was proven on
+
+This guide is not abstract. It was derived from a real deployment that was debugged end-to-end and eventually restored successfully.
+
+Proven reference case:
+- OpenClaw running inside WSL
+- OpenClaw's built-in Feishu channel
+- `minimax-cn/MiniMax-M2.7`
+- not `minimax-portal/*`
+
+Use this as the first comparison target when another user says "my setup is basically the same".
+
+The most common false equivalences are:
+- `minimax-cn` vs `minimax-portal`
+- built-in OpenClaw Feishu channel vs other Feishu integrations
+- shell test path vs gateway service path
+
+If another user's setup differs on any of these, treat it as a different case until proven otherwise.
+
 ## 1. The most important lesson
 
 When a Feishu card regression appears, do not start by tweaking the visual template.

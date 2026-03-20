@@ -80,16 +80,56 @@ This skill is intentionally user-friendly:
 - [SKILL.md](./SKILL.md): main skill
 - [references/implementation-guide.md](./references/implementation-guide.md): deeper implementation and debugging reference
 
+## References
+
+These are the main references used to shape this skill and its methodology.
+
+### Official Feishu docs
+
+- Feishu Card JSON 2.0 structure  
+  https://open.feishu.cn/document/feishu-cards/card-json-v2-structure
+
+- `collapsible_panel` in Feishu Card 2.0  
+  https://open.feishu.cn/document/feishu-cards/card-json-v2-components/containers/collapsible-panel
+
+- Feishu card update guide  
+  https://open.feishu.cn/document/feishu-cards/update-feishu-card
+
+- PATCH updates for sent message cards  
+  https://open.feishu.cn/document/server-docs/im-v1/message-card/patch
+
+### OpenClaw / Telegram references
+
+- OpenClaw Telegram channel docs  
+  https://openclawlab.com/en/docs/channels/telegram/
+
+- OpenClaw upstream repository  
+  https://github.com/openclaw/openclaw
+
+Note:
+- We referenced Telegram’s reasoning-stream direction as a product and implementation reference
+- But upstream source paths may change across versions
+- So this repository keeps stable upstream entry links here instead of hardcoding fragile deep source links
+
+### Repository-local references
+
+- Main skill: [`SKILL.md`](./SKILL.md)
+- Implementation reference: [`references/implementation-guide.md`](./references/implementation-guide.md)
+
 ## Installation
 
-Copy this directory into your skill directory, for example:
+This repository is meant for users who primarily interact through OpenClaw itself.
 
-- `~/.codex/skills/`
-- `~/.agents/skills/`
+The recommended installation path is:
 
-depending on your agent environment.
+- give this GitHub repository URL directly to OpenClaw / your agent
+- let it read the repository as a skill source
 
-## Suggested trigger prompts
+Repository URL:
+
+- `https://github.com/doashoi/openclaw-feishu-reasoning-ux`
+
+## Minimal trigger examples
 
 Examples:
 
@@ -119,6 +159,58 @@ Its strength is:
 - the Feishu UX customization method
 - the accumulated implementation experience
 
+## FAQ
+
+### 1. Why is raw reasoning sometimes in Chinese and sometimes in English?
+
+That is usually normal. It does not automatically mean the card logic is broken.
+
+Typical reasons:
+
+- the model/provider may internally reason in mixed Chinese and English
+- some runtimes pass upstream reasoning snapshots through to the UI with minimal transformation
+- different models, providers, and prompts can change the reasoning language
+
+If what you are seeing is truly raw reasoning, language consistency is not guaranteed.
+
+### 2. Does that mean the skill stopped working?
+
+Not necessarily.
+
+Language drift is different from an actual failure.
+
+Real failures look more like:
+- only `Thinking...` is visible
+- no raw reasoning appears at all
+- final answer does not stream
+- title/panel/send paths regress
+
+If the only issue is that some reasoning turns English, that is more likely a model-output characteristic than a broken Feishu implementation.
+
+### 3. Can we force all reasoning to appear in Chinese?
+
+You can try presentation-layer rewriting, but that stops being strictly raw reasoning.
+
+So there are two different goals:
+
+- if you want truly raw reasoning, mixed language may be part of the output
+- if you want consistently Chinese presentation, that becomes a transformed display layer
+
+By default, this skill prioritizes preserving the authenticity of visible raw reasoning rather than silently rewriting it.
+
+### 4. Why do some models stream raw reasoning while others only show Thinking...?
+
+Because models/providers expose reasoning in different forms.
+
+Common cases:
+
+- readable live reasoning events
+- thinking only in the final transcript
+- encrypted/opaque reasoning payloads
+- no exposed reasoning at all
+
+So raw reasoning visibility is not only a Feishu card problem; it also depends on the model/provider path itself.
+
 ## Restart policy
 
 If a change requires restarting `openclaw-gateway`, the agent must:
@@ -133,12 +225,3 @@ Unexpected restarts can disrupt:
 - active Feishu conversations
 - current session reasoning state
 - ongoing tasks
-
-## Suggested next steps
-
-If you want to publish this repository to more skill libraries, consider adding:
-
-- repository topics
-- one or two real screenshots
-- a minimal installation example
-- a minimal trigger prompt example

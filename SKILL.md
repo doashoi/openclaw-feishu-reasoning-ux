@@ -18,6 +18,24 @@ This skill is for:
 
 This skill is not for generic Feishu app setup, permissions, or bot connectivity unless those directly block card delivery.
 
+## Read this first
+
+Before making any change, read:
+
+- [references/proven-case-and-pitfalls.md](./references/proven-case-and-pitfalls.md)
+
+Do not skip it.
+
+That document contains:
+- the real successful practice this skill came from
+- the real failure patterns we actually hit
+- the specific traps that repeatedly caused false fixes or broken environments
+
+Only after reading it should you decide whether the current case is:
+- close enough to a proven pattern to continue
+- only safe for low-risk card changes
+- or outside the proven cases and should be explained to the user first
+
 ## Core operating principles
 
 This is not a "silently fix everything" skill.

@@ -209,4 +209,5 @@ By default, this skill prioritizes preserving the authenticity of reasoning rath
 ### Repository-local references
 
 - [SKILL.md](./SKILL.md)
+- [references/proven-case-and-pitfalls.md](./references/proven-case-and-pitfalls.md)
 - [references/implementation-guide.md](./references/implementation-guide.md)

@@ -155,6 +155,17 @@ Common cases:
 
 So this is not only a Feishu card-layer issue. It also depends on the current model path itself.
 
+One important nuance:
+
+- some model paths are not "completely unsupported"
+- they may only support snapshot/transcript-only thinking
+- in those cases, the model can still preserve reasoning after completion, but it cannot provide true live raw reasoning
+
+So the more accurate statement is often:
+- `does not support true live raw reasoning on the current path`
+rather than simply:
+- `the model does not support reasoning`
+
 ### Can everything be forced into Chinese?
 
 You can add a presentation-layer rewrite, but then it stops being strictly raw reasoning.

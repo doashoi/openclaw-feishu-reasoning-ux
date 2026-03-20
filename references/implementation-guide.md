@@ -197,6 +197,19 @@ When checking a model for Feishu raw reasoning support, use this decision tree:
 This prevents a common mistake:
 - blaming Feishu card code for a model/provider capability limit.
 
+Another common mistake:
+- calling a snapshot-only or transcript-only model path simply "unsupported"
+
+That is too coarse.
+
+Use this distinction instead:
+- supports true live raw reasoning
+- supports only post-hoc / snapshot reasoning
+- supports only encrypted / opaque reasoning
+- exposes no readable reasoning
+
+This matters because the user-facing options are different in each case.
+
 ## 5.1 Turn technical diagnosis into user choices
 
 When capability limits are found, do not stop at the technical conclusion.

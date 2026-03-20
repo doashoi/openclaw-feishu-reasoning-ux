@@ -306,6 +306,19 @@ Only after this check may you decide whether the task is:
 - a session/runtime routing problem
 - or a provider/model capability limit
 
+Important:
+- do not collapse all non-live cases into "the model does not support reasoning"
+- distinguish:
+  - supports true live raw reasoning
+  - supports only snapshot/transcript reasoning
+  - exposes encrypted/opaque reasoning
+  - exposes no readable reasoning at all
+
+A snapshot-only result means:
+- the model may still support reasoning
+- but not true live raw reasoning through the current path
+- the correct user-facing explanation is not simply "unsupported"
+
 #### How to explain the result to the user
 
 After capability detection, always convert the result into one of these user-facing outcomes:
@@ -319,6 +332,14 @@ After capability detection, always convert the result into one of these user-fac
 - Offer alternatives:
   - keep current model and improve card 2.0 appearance
   - switch to a model/provider path that supports raw reasoning
+
+2.5. **Model supports only snapshot/transcript reasoning**
+- Say that the current path can retain reasoning after completion, but not stream true live raw reasoning.
+- Do not describe this as "no reasoning support" without qualification.
+- Offer alternatives:
+  - keep the current model and improve card 2.0 / ordinary answer streaming
+  - switch to a path that exposes live raw reasoning
+  - if appropriate, design a replay/summary experience instead of pretending it is live raw reasoning
 
 3. **Model/provider state is unclear**
 - Say that the current route is not trustworthy yet.

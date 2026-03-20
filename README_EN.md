@@ -9,7 +9,7 @@
 ![OpenClaw](https://img.shields.io/badge/OpenClaw-Feishu%20UX-0ea5e9)
 ![Skill](https://img.shields.io/badge/type-skill-8b5cf6)
 
-Make OpenClaw stream visible reasoning in Feishu in a Telegram-like way, so users do not sit through a long black-box wait.
+Make OpenClaw show reasoning in Feishu in a Telegram-like real-time streaming way, avoid long black-box waits, and pair it with better-looking colorful 2.0 cards that support multi-component containers and rich text.
 
 This is a skill for OpenClaw, designed to improve or debug the Feishu reply experience, especially around:
 

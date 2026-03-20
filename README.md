@@ -9,7 +9,7 @@
 ![OpenClaw](https://img.shields.io/badge/OpenClaw-Feishu%20UX-0ea5e9)
 ![Skill](https://img.shields.io/badge/type-skill-8b5cf6)
 
-让 OpenClaw 在飞书里的像 Telegram 通道中一样实时流式更新思考内容，避免长时间黑盒等待。
+让 OpenClaw 在飞书里像 Telegram 一样实时流式显示思考内容，避免长时间黑盒等待，并配上更好看的彩色 2.0 卡片，支持多组件容器和富文本。
 
 这是一个给 Openclaw 使用的 skill，用来改造或排查 OpenClaw 的 Feishu 回复体验，重点包括：
 
